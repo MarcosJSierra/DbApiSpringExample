@@ -1,4 +1,4 @@
-package org.marcos.ApiDbExample.models.response;
+package org.marcos.ApiDbExample.dto.response;
 
 
 import java.util.List;

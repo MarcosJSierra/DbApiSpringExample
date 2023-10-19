@@ -2,9 +2,8 @@ package org.marcos.ApiDbExample.service;
 
 import java.util.ArrayList;
 
-import org.hibernate.mapping.Collection;
+import org.marcos.ApiDbExample.dto.response.BancoResponse;
 import org.marcos.ApiDbExample.models.Banco;
-import org.marcos.ApiDbExample.models.response.BancoResponse;
 import org.marcos.ApiDbExample.repository.BancoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +41,11 @@ public class BancoServiceImp implements BancoService{
     public ArrayList<Banco> getAllBancos() {
         return (ArrayList<Banco>) bancoRepository.findAll();
         
+    }
+
+    @Override
+    public Banco getBancoById(String id) {
+        return bancoRepository.findById(Long.parseLong(id)).orElse(null);
     }
     
 }
