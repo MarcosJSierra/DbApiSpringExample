@@ -3,9 +3,6 @@ package org.marcos.ApiDbExample.controller;
 import java.util.List;
 import java.util.Objects;
 
-import javax.print.DocFlavor.READER;
-
-import org.marcos.ApiDbExample.dto.response.BancoResponse;
 import org.marcos.ApiDbExample.models.Banco;
 import org.marcos.ApiDbExample.service.BancoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,7 +29,8 @@ public class BancoController {
     @Autowired
     private BancoService bancoService;
 
-    @GetMapping("/{idbanco}")
+    // @GetMapping("/{idbanco}")
+    @RequestMapping(method = RequestMethod.HEAD, path = "/{idbanco}")
     public ResponseEntity<String> headBancoId(@PathVariable(name = "idbanco") String id) {
         boolean bankExists = bancoService.bankExists(id);
         if (bankExists) {
