@@ -3,6 +3,7 @@ package org.marcos.ApiDbExample.controller;
 import java.util.List;
 import java.util.Objects;
 
+import org.marcos.ApiDbExample.dto.response.GeneralResponse;
 import org.marcos.ApiDbExample.models.Banco;
 import org.marcos.ApiDbExample.service.BancoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class BancoController {
 
     // @GetMapping("/{idbanco}")
     @RequestMapping(method = RequestMethod.HEAD, path = "/{idbanco}")
-    public ResponseEntity<String> headBancoId(@PathVariable(name = "idbanco") String id) {
+    public ResponseEntity<GeneralResponse> headBancoId(@PathVariable(name = "idbanco") String id) {
         boolean bankExists = bancoService.bankExists(id);
         if (bankExists) {
             return ResponseEntity.ok("");

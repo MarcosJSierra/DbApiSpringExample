@@ -2,24 +2,27 @@ package org.marcos.ApiDbExample.service;
 
 import java.util.List;
 
-import org.marcos.ApiDbExample.dto.response.BancoResponse;
+import org.marcos.ApiDbExample.dto.response.GeneralResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.response.BankResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListBankNamesResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListOfBanksResponse;
 import org.marcos.ApiDbExample.models.Banco;
 
 public interface BancoService {
 
-    public boolean bankExists(String id);
+    public GeneralResponse bankExists(String id);
     
-    public Banco createBanco(Banco banco);
+    public BankResponse createBanco(Banco banco);
 
-    public Banco getBancoById(String id);
+    public BankResponse getBancoById(String id);
 
-    public Banco updateBanco(Banco banco);
+    public BankResponse updateBanco(Banco banco);
 
-    public Banco parcialUpdateBanco(Banco banco);
+    public BankResponse parcialUpdateBanco(Banco banco);
 
-    public BancoResponse nameBancos();
+    public ListBankNamesResponse nameBancos();
 
-    public List<Banco> getAllBancos();
+    public ListOfBanksResponse getAllBancos();
 
-    public Banco deleteBanco(String id);
+    public BankResponse deleteBanco(String id);
 }
