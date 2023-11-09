@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Objects;
 
 import org.marcos.ApiDbExample.dto.response.GeneralResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.BankDbDto;
+import org.marcos.ApiDbExample.dto.response.bancoDto.response.BankResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListOfBanksResponse;
 import org.marcos.ApiDbExample.models.Banco;
 import org.marcos.ApiDbExample.service.BancoService;
+import org.marcos.ApiDbExample.tools.CodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,62 +34,65 @@ public class BancoController {
     @Autowired
     private BancoService bancoService;
 
+    @Autowired
+    private CodeService codeService;
+
     // @GetMapping("/{idbanco}")
     @RequestMapping(method = RequestMethod.HEAD, path = "/{idbanco}")
     public ResponseEntity<GeneralResponse> headBancoId(@PathVariable(name = "idbanco") String id) {
-        boolean bankExists = bancoService.bankExists(id);
-        if (bankExists) {
-            return ResponseEntity.ok("");
+        GeneralResponse bankExists = bancoService.bankExists(id);
+        if (bankExists.getCode().equals(codeService.okCode)) {
+            return ResponseEntity.ok(bankExists);
         }
         return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Banco>> listBancos() {
+    public ResponseEntity<ListOfBanksResponse> listBancos() {
         return ResponseEntity.ok(bancoService.getAllBancos());
     }
 
     @GetMapping("/getBanco")
-    public ResponseEntity<Banco> getBancoById(@RequestParam String id) {
+    public ResponseEntity<BankResponse> getBancoById(@RequestParam String id) {
         var banco = bancoService.getBancoById(id);
-        if (Objects.nonNull(banco)) {
+        if (banco.getCode().equals(codeService.okCode)) {
             return ResponseEntity.ok(banco);
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/createBanco")
-    public ResponseEntity<Banco> createBanco(@RequestBody Banco banco) {
-        Banco created = bancoService.createBanco(banco);
+    public ResponseEntity<BankResponse> createBanco(@RequestBody BankDbDto banco) {
+        var created = bancoService.createBanco(banco.toModel());
 
         return ResponseEntity.created(
-                ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.getId()).toUri())
+                ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.getBankDbResponse().getBankId()).toUri())
                 .body(created);
     }
 
     @PutMapping("/updateBanco")
-    public ResponseEntity<Banco> updateBanco(@RequestBody Banco banco) {
-        Banco updated = bancoService.updateBanco(banco);
+    public ResponseEntity<BankResponse> updateBanco(@RequestBody BankDbDto banco) {
+        var updated = bancoService.updateBanco(banco.toModel());
         return ResponseEntity.created(
-            ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updated.getId()).toUri())
+            ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updated.getBankDbResponse().getBankId()).toUri())
             .body(updated);
     }
 
     @PatchMapping("/updateBanco")
-    public ResponseEntity<Banco> parcialUpdateBanco(@RequestBody Banco banco) {
-        Banco updated = bancoService.parcialUpdateBanco(banco);
-        if (Objects.isNull(updated)) {
+    public ResponseEntity<BankResponse> parcialUpdateBanco(@RequestBody BankDbDto banco) {
+        var updated = bancoService.parcialUpdateBanco(banco.toModel());
+        if (!updated.getCode().equals(codeService.updatedCode)) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.created(
-                ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updated.getId()).toUri())
+                ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updated.getBankDbResponse().getBankId()).toUri())
                 .body(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Banco> deleteBanco(@PathVariable(name = "id") String id){
-        Banco deleted = bancoService.deleteBanco(id);
-        if(Objects.isNull(deleted)){
+    public ResponseEntity<BankResponse> deleteBanco(@PathVariable(name = "id") String id){
+        BankResponse deleted = bancoService.deleteBanco(id);
+        if(!deleted.getCode().equals(codeService.deleteCode)){
             return ResponseEntity.noContent().build();
         }
 

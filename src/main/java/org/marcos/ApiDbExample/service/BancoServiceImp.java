@@ -22,6 +22,9 @@ public class BancoServiceImp implements BancoService {
     @Autowired
     private BancoRepository bancoRepository;
 
+    @Autowired
+    private CodeService codeService;
+
     @Override
     @Transactional
     public BankResponse createBanco(Banco banco) {
@@ -29,16 +32,13 @@ public class BancoServiceImp implements BancoService {
         var response = new BankResponse();
         try {
             var dbResponse = bancoRepository.save(banco);
-            response.setBankDbResponse(new BankDbDto());
-            response.getBankDbResponse().setBankId(dbResponse.getId().toString());
-            response.getBankDbResponse().setBankDescription(dbResponse.getDescription());
-            response.getBankDbResponse().setBankName(dbResponse.getName());
+            response.setBankDbResponse(new BankDbDto(dbResponse));
 
-            response.setCode(CodeService.okCode);
-            response.setMessage(CodeService.okMessage);
+            response.setCode(codeService.okCode);
+            response.setMessage(codeService.okMessage);
         } catch (Exception e) {
-            response.setCode(CodeService.errorCode);
-            response.setMessage(CodeService.errorMessage);
+            response.setCode(codeService.errorCode);
+            response.setMessage(codeService.errorMessage);
         }
 
         return response;
@@ -55,11 +55,11 @@ public class BancoServiceImp implements BancoService {
         }
 
         if (bancosNameList.isEmpty()) {
-            response.setCode(CodeService.emptyCode);
-            response.setMessage(CodeService.emptyMessage);
+            response.setCode(codeService.emptyCode);
+            response.setMessage(codeService.emptyMessage);
         } else {
-            response.setCode(CodeService.okCode);
-            response.setMessage(CodeService.okMessage);
+            response.setCode(codeService.okCode);
+            response.setMessage(codeService.okMessage);
         }
 
         response.setBankNames(bancosNameList);
@@ -77,25 +77,22 @@ public class BancoServiceImp implements BancoService {
             response.setListaBancos(new ArrayList<>());
 
             if (dataList.isEmpty()) {
-                response.setCode(CodeService.emptyCode);
-                response.setMessage(CodeService.emptyMessage);
+                response.setCode(codeService.emptyCode);
+                response.setMessage(codeService.emptyMessage);
             } else {
 
                 BankDbDto data;
                 for (var detalle : dataList) {
-                    data = new BankDbDto();
-                    data.setBankId(detalle.getId().toString());
-                    data.setBankName(detalle.getName());
-                    data.setBankDescription(detalle.getDescription());
+                    data = new BankDbDto(detalle);
                     response.getListaBancos().add(data);
                 }
-                response.setCode(CodeService.okCode);
-                response.setMessage(CodeService.okMessage);
+                response.setCode(codeService.okCode);
+                response.setMessage(codeService.okMessage);
 
             }
         } catch (Exception e) {
-            response.setCode(CodeService.errorCode);
-            response.setMessage(CodeService.errorMessage);
+            response.setCode(codeService.errorCode);
+            response.setMessage(codeService.errorMessage);
         }
         return response;
 
@@ -110,20 +107,17 @@ public class BancoServiceImp implements BancoService {
             Banco data = bancoRepository.findById(Long.parseLong(id)).orElse(null);
 
             if (Objects.nonNull(data)) {
-                response.setBankDbResponse(new BankDbDto());
-                response.getBankDbResponse().setBankId(data.getId().toString());
-                response.getBankDbResponse().setBankDescription(data.getDescription());
-                response.getBankDbResponse().setBankName(data.getName());
+                response.setBankDbResponse(new BankDbDto(data));
 
-                response.setCode(CodeService.okCode);
-                response.setMessage(CodeService.okMessage);
+                response.setCode(codeService.okCode);
+                response.setMessage(codeService.okMessage);
             } else {
-                response.setCode(CodeService.errorNotFoundCode);
-                response.setMessage(CodeService.errorNotFoundMessage);
+                response.setCode(codeService.errorNotFoundCode);
+                response.setMessage(codeService.errorNotFoundMessage);
             }
         } catch (Exception e) {
-            response.setCode(CodeService.errorCode);
-            response.setMessage(CodeService.errorMessage);
+            response.setCode(codeService.errorCode);
+            response.setMessage(codeService.errorMessage);
         }
 
         return response;
@@ -135,11 +129,13 @@ public class BancoServiceImp implements BancoService {
         GeneralResponse response = new GeneralResponse();
 
         if (Objects.nonNull(banco)) {
-            response.setCode(CodeService.okCode);
-            response.setMessage(CodeService.okMessage);
+            response.setCode(codeService.okCode);
+            response.setMessage(codeService.okMessage);
         } else {
-            response.setCode(CodeService.errorNotFoundCode);
-            response.setMessage(CodeService.errorMessage);
+
+            System.out.println(codeService.errorNotFoundCode);
+            response.setCode(codeService.errorNotFoundCode);
+            response.setMessage(codeService.errorMessage);
         }
 
         return response;
@@ -153,17 +149,13 @@ public class BancoServiceImp implements BancoService {
 
             var dbResponse = bancoRepository.save(banco);
 
-            responseUpdate.setBankDbResponse(new BankDbDto());
+            responseUpdate.setBankDbResponse(new BankDbDto(dbResponse));
 
-            responseUpdate.getBankDbResponse().setBankId(dbResponse.getId().toString());
-            responseUpdate.getBankDbResponse().setBankDescription(dbResponse.getDescription());
-            responseUpdate.getBankDbResponse().setBankName(dbResponse.getName());
-
-            responseUpdate.setCode(CodeService.okCode);
-            responseUpdate.setMessage(CodeService.okMessage);
+            responseUpdate.setCode(codeService.okCode);
+            responseUpdate.setMessage(codeService.okMessage);
         } catch (Exception e) {
-            responseUpdate.setCode(CodeService.errorCode);
-            responseUpdate.setMessage(CodeService.errorMessage);
+            responseUpdate.setCode(codeService.errorCode);
+            responseUpdate.setMessage(codeService.errorMessage);
         }
 
         return responseUpdate;
@@ -179,8 +171,8 @@ public class BancoServiceImp implements BancoService {
 
                 if (Objects.isNull(oldBanco)) {
 
-                    response.setCode(CodeService.errorNotFoundCode);
-                    response.setMessage(CodeService.errorNotFoundMessage);
+                    response.setCode(codeService.errorNotFoundCode);
+                    response.setMessage(codeService.errorNotFoundMessage);
                     return response;
                 }
 
@@ -195,18 +187,15 @@ public class BancoServiceImp implements BancoService {
 
                 var updatedBanco = bancoRepository.save(oldBanco);
 
-                response.setBankDbResponse(new BankDbDto());
-                response.getBankDbResponse().setBankId(updatedBanco.getId().toString());
-                response.getBankDbResponse().setBankName(updatedBanco.getName());
-                response.getBankDbResponse().setBankDescription(updatedBanco.getDescription());
+                response.setBankDbResponse(new BankDbDto(updatedBanco));
 
-                response.setCode(CodeService.updatedCode);
-                response.setMessage(CodeService.updatedMessage);
+                response.setCode(codeService.updatedCode);
+                response.setMessage(codeService.updatedMessage);
 
             } catch (Exception e) {
 
-                response.setCode(CodeService.errorCode);
-                response.setMessage(CodeService.errorMessage);
+                response.setCode(codeService.errorCode);
+                response.setMessage(codeService.errorMessage);
             }
 
         }
@@ -223,26 +212,23 @@ public class BancoServiceImp implements BancoService {
 
             if (Objects.isNull(banco)) {
                 
-                response.setCode(CodeService.errorNotFoundCode);
-                response.setMessage(CodeService.errorNotFoundMessage);
+                response.setCode(codeService.errorNotFoundCode);
+                response.setMessage(codeService.errorNotFoundMessage);
                 return response;
             }
 
             bancoRepository.deleteById(Long.parseLong(id));
 
 
-            response.setCode(CodeService.deleteCode);
-            response.setMessage(CodeService.deleteMessage);
+            response.setCode(codeService.deleteCode);
+            response.setMessage(codeService.deleteMessage);
 
-            response.setBankDbResponse(new BankDbDto());
-            response.getBankDbResponse().setBankId(banco.getId().toString());
-            response.getBankDbResponse().setBankName(banco.getName());
-            response.getBankDbResponse().setBankDescription(banco.getDescription());
+            response.setBankDbResponse(new BankDbDto(banco));
 
         } catch (Exception e) {
             
-                response.setCode(CodeService.errorCode);
-                response.setMessage(CodeService.errorMessage);
+                response.setCode(codeService.errorCode);
+                response.setMessage(codeService.errorMessage);
 
         }
         return response;
