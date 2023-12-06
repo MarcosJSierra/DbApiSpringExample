@@ -50,7 +50,12 @@ public class BancoController {
 
     @GetMapping("/")
     public ResponseEntity<ListOfBanksResponse> listBancos() {
-        return ResponseEntity.ok(bancoService.getAllBancos());
+        var bancos = bancoService.getAllBancos();
+
+        if(bancos.getCode().equals(codeService.errorCode)){
+            return ResponseEntity.internalServerError().body(bancos);
+        }
+        return ResponseEntity.ok(bancos);
     }
 
     @GetMapping("/getBanco")
@@ -66,6 +71,9 @@ public class BancoController {
     public ResponseEntity<BankResponse> createBanco(@RequestBody BankDbDto banco) {
         var created = bancoService.createBanco(banco.toModel());
 
+        if(created.getCode().equals(codeService.errorCode)){
+            return ResponseEntity.internalServerError().body(created);
+        }
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.getBankDbResponse().getBankId()).toUri())
                 .body(created);
@@ -74,6 +82,12 @@ public class BancoController {
     @PutMapping("/updateBanco")
     public ResponseEntity<BankResponse> updateBanco(@RequestBody BankDbDto banco) {
         var updated = bancoService.updateBanco(banco.toModel());
+
+
+        if(updated.getCode().equals(codeService.errorCode)){
+            return ResponseEntity.internalServerError().body(updated);
+        }
+
         return ResponseEntity.created(
             ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updated.getBankDbResponse().getBankId()).toUri())
             .body(updated);
@@ -82,9 +96,16 @@ public class BancoController {
     @PatchMapping("/updateBanco")
     public ResponseEntity<BankResponse> parcialUpdateBanco(@RequestBody BankDbDto banco) {
         var updated = bancoService.parcialUpdateBanco(banco.toModel());
+
+        if(updated.getCode().equals(codeService.errorCode)){
+            return ResponseEntity.internalServerError().body(updated);
+        }
+
         if (!updated.getCode().equals(codeService.updatedCode)) {
             return ResponseEntity.noContent().build();
         }
+
+        
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(updated.getBankDbResponse().getBankId()).toUri())
                 .body(updated);
