@@ -1,4 +1,4 @@
-package org.marcos.ApiDbExample.dto.response.bancoDto.response;
+package org.marcos.ApiDbExample.dto.response.bancoDto;
 
 
 import java.util.List;
@@ -17,5 +17,5 @@ import lombok.EqualsAndHashCode;
 @JsonInclude(Include.NON_NULL)
 public class ListBankNamesResponse extends GeneralResponse{
     @JsonProperty("bankNames")
-    List<String> bankNames;
+    private List<String> bankNames;
 }

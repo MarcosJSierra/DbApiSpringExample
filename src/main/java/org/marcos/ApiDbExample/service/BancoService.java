@@ -3,9 +3,9 @@ package org.marcos.ApiDbExample.service;
 import java.util.List;
 
 import org.marcos.ApiDbExample.dto.response.GeneralResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.BankResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListBankNamesResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListOfBanksResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.BankResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.ListBankNamesResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.ListOfBanksResponse;
 import org.marcos.ApiDbExample.models.Banco;
 
 public interface BancoService {

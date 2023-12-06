@@ -3,14 +3,15 @@ package org.marcos.ApiDbExample.controller;
 import java.util.List;
 import java.util.Objects;
 
+import org.marcos.ApiDbExample.dto.modelsDtos.BankDbDto;
 import org.marcos.ApiDbExample.dto.response.GeneralResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.BankDbDto;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.BankResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListOfBanksResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.BankResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.ListOfBanksResponse;
 import org.marcos.ApiDbExample.models.Banco;
 import org.marcos.ApiDbExample.service.BancoService;
 import org.marcos.ApiDbExample.tools.CodeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +29,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "api/db/banco")
+@RequestMapping(value = "${api.db.uri}"+"banco")
 public class BancoController {
 
     @Autowired

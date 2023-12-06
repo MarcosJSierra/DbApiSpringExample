@@ -1,4 +1,6 @@
-package org.marcos.ApiDbExample.dto.response.bancoDto;
+package org.marcos.ApiDbExample.dto.modelsDtos;
+
+import java.io.Serializable;
 
 import org.marcos.ApiDbExample.models.Banco;
 
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankDbDto {
+public class BankDbDto implements Serializable{
     
     @JsonProperty("BankId")
     private String bankId;

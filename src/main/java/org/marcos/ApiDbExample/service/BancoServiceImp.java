@@ -3,11 +3,11 @@ package org.marcos.ApiDbExample.service;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.marcos.ApiDbExample.dto.modelsDtos.BankDbDto;
 import org.marcos.ApiDbExample.dto.response.GeneralResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.BankDbDto;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.BankResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListBankNamesResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.response.ListOfBanksResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.BankResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.ListBankNamesResponse;
+import org.marcos.ApiDbExample.dto.response.bancoDto.ListOfBanksResponse;
 import org.marcos.ApiDbExample.models.Banco;
 import org.marcos.ApiDbExample.repository.BancoRepository;
 import org.marcos.ApiDbExample.tools.CodeService;

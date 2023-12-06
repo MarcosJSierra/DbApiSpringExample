@@ -1,9 +1,9 @@
-package org.marcos.ApiDbExample.dto.response.bancoDto.response;
+package org.marcos.ApiDbExample.dto.response.bancoDto;
 
 import java.util.List;
 
+import org.marcos.ApiDbExample.dto.modelsDtos.BankDbDto;
 import org.marcos.ApiDbExample.dto.response.GeneralResponse;
-import org.marcos.ApiDbExample.dto.response.bancoDto.BankDbDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
