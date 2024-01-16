@@ -13,6 +13,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>apiDbExample</name>
 	<description>Ejemplo de API con acceso a DB</description>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -41,9 +42,16 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		  </dependency>
 	</dependencies>
 
 	<build>
+		<finalName>api-bancos</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
